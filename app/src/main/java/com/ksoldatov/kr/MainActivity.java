@@ -14,7 +14,6 @@ import com.ksoldatov.kr.ui.SearchFragment;
 
 public class MainActivity extends AppCompatActivity {
 
-    private BottomNavigationView bottomNavigationView;
     public static String MAP_EXTRA = "MAP_EXTRA";
     public static String GEO_LAT = "GEO_LAT";
     public static String GEO_LONG = "GEO_LONG";
@@ -79,9 +78,10 @@ public class MainActivity extends AppCompatActivity {
             }
         }
 
-        bottomNavigationView = findViewById(R.id.bottom_navigation);
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
         bottomNavigationView.setOnNavigationItemSelectedListener(item -> refreshFragmant(item.getItemId(), new Bundle()));
 
+        assert intent != null;
         if (savedInstanceState == null && !intent.hasExtra(MAP_EXTRA)) {
             initInflate();
         }

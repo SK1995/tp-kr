@@ -2,6 +2,7 @@ package com.ksoldatov.kr;
 
 import android.app.Application;
 import android.arch.persistence.room.Room;
+import android.support.annotation.NonNull;
 
 import com.ksoldatov.kr.api.Api;
 import com.ksoldatov.kr.database.PartyDB;
@@ -15,14 +16,8 @@ import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-/**
- * Created by Yeti on 08.04.2018.
- */
-
 public class App extends Application {
-    private static String BASE_URL = "https://suggestions.dadata.ru/suggestions/api/";
     private static Api api;
-    private Retrofit retrofit;
     private PartyDB partyDB;
     public static App app;
 
@@ -38,7 +33,7 @@ public class App extends Application {
                 .addInterceptor(interceptor)
                 .addInterceptor(new Interceptor() {
                     @Override
-                    public okhttp3.Response intercept(Chain chain) throws IOException {
+                    public okhttp3.Response intercept(@NonNull Chain chain) throws IOException {
                         Request newRequest = chain.request().newBuilder()
                                 .addHeader("Authorization", "Token " + BuildConfig.API_KEY)
                                 .addHeader("Content-Type", "application/json")
@@ -49,7 +44,8 @@ public class App extends Application {
                 })
                 .build();
 
-        retrofit = new Retrofit.Builder()
+        String BASE_URL = "https://suggestions.dadata.ru/suggestions/api/";
+        Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(BASE_URL)
                 .client(client)
                 .addConverterFactory(GsonConverterFactory.create())

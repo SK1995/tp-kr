@@ -1,5 +1,6 @@
 package com.ksoldatov.kr.utils;
 
+import android.support.annotation.NonNull;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.widget.AutoCompleteTextView;
@@ -21,7 +22,6 @@ public class SuggestionsTextWatcher implements TextWatcher {
     private AutoCompleteTextView autoCompleteTextView;
     private CounterPartyAdapter adapter;
     private Timer timer = new Timer();
-    private final long DELAY = 1000;
     public static ResponseObject responseObject;
 
     public SuggestionsTextWatcher(CounterPartyAdapter adapter, AutoCompleteTextView autoCompleteTextView) {
@@ -43,15 +43,17 @@ public class SuggestionsTextWatcher implements TextWatcher {
     public void afterTextChanged(Editable editable) {
         timer.cancel();
         timer = new Timer();
+        long DELAY = 1000;
         timer.schedule(
                 new TimerTask() {
                     @Override
                     public void run() {
                         App.getApi().getSuggestions(new ApiRequest(editable.toString())).enqueue(new Callback<ResponseObject>() {
                             @Override
-                            public void onResponse(Call<ResponseObject> call, Response<ResponseObject> response) {
+                            public void onResponse(@NonNull Call<ResponseObject> call, @NonNull Response<ResponseObject> response) {
 
                                 adapter.clear();
+                                assert response.body() != null;
                                 adapter.addAll(response.body().getSuggestions());
                                 adapter.notifyDataSetChanged();
                                 adapter.getFilter().filter(autoCompleteTextView.getText(), null);
@@ -60,7 +62,7 @@ public class SuggestionsTextWatcher implements TextWatcher {
                             }
 
                             @Override
-                            public void onFailure(Call<ResponseObject> call, Throwable t) {
+                            public void onFailure(@NonNull Call<ResponseObject> call, @NonNull Throwable t) {
                                 autoCompleteTextView.setText(t.getMessage());
                             }
                         });
