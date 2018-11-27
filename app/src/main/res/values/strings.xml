@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">Поиск по контрагенту</string>
+    <string name="inn_hint">Наименование/ИНН</string>
+    <string name="submit">Перейти</string>
+    <string name="go_to_recent">История запросов</string>
+    <string name="recently_viewed">Недавно просмотренные:</string>
+    <string name="empty_list">список пуст</string>
+    <string name="search">Поиск</string>
+    <string name="history">История</string>
+    <string name="map">Карта</string>
+</resources>
